@@ -6,7 +6,6 @@ export class LoginPage extends BasePage {
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly alertBadge: Locator;
-  readonly inputErrors: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -14,24 +13,19 @@ export class LoginPage extends BasePage {
     this.passwordInput = page.getByPlaceholder('Password');
     this.loginButton = page.getByRole('button', { name: 'Login' });
     this.alertBadge = page.getByRole('alert');
-    this.inputErrors = page.locator('span.oxd-input-field-error-message');
   }
 
-  async open(): Promise<void> {
+  async openApp() {
     await this.navigateTo('/web/index.php/auth/login');
   }
 
-  async executeLogin(username?: string, password?: string): Promise<void> {
-    if (username) await this.usernameInput.fill(username);
-    if (password) await this.passwordInput.fill(password);
-    await this.loginButton.click();
+  async login(username?: string, password?: string) {
+    if (username) await this.sendKeys(this.usernameInput, username);
+    if (password) await this.sendKeys(this.passwordInput, password);
+    await this.clickElement(this.loginButton);
   }
 
-  async expectErrorMessage(message: string): Promise<void> {
-    await expect(this.alertBadge).toContainText(message);
-  }
-
-  async expectRequiredFieldErrorCount(count: number): Promise<void> {
-    await expect(this.inputErrors).toHaveCount(count);
+  async assertInvalidCredentialsError() {
+    await expect(this.alertBadge).toContainText('Invalid credentials');
   }
 }

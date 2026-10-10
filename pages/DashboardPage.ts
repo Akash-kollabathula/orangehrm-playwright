@@ -2,17 +2,20 @@ import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class DashboardPage extends BasePage {
-  readonly headerTitle: Locator;
-  readonly userDropdown: Locator;
+  readonly heading: Locator;
+  readonly pimMenu: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.headerTitle = page.getByRole('heading', { name: 'Dashboard' });
-    this.userDropdown = page.locator('span.oxd-userdropdown-tab');
+    this.heading = page.getByRole('heading', { name: 'Dashboard' });
+    this.pimMenu = page.getByRole('link', { name: 'PIM' });
   }
 
-  async verifyDashboardLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL(/.*dashboard.*/);
-    await expect(this.headerTitle).toBeVisible();
+  async assertDashboardLoaded() {
+    await expect(this.heading).toBeVisible();
+  }
+
+  async navigateToPIM() {
+    await this.clickElement(this.pimMenu);
   }
 }
