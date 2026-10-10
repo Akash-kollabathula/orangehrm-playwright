@@ -13,6 +13,7 @@ test.describe('Authentication Suite', () => {
     await loginPage.expectErrorMessage(loginData.errorMessages.invalidCredentials);
   });
 
+  
   test('TC_03: Verify input validation on empty submission', async ({ loginPage }) => {
     await loginPage.loginButton.click();
     await loginPage.expectRequiredFieldErrorCount(2);
