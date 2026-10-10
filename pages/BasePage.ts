@@ -1,17 +1,23 @@
 import { Page, Locator } from '@playwright/test';
 
-export abstract class BasePage {
-  constructor(protected readonly page: Page) {}
+export class BasePage {
+  readonly page: Page;
 
-  async navigateTo(path: string): Promise<void> {
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async navigateTo(path: string) {
     await this.page.goto(path);
   }
 
-  async waitForElement(locator: Locator): Promise<void> {
+  async clickElement(locator: Locator) {
     await locator.waitFor({ state: 'visible' });
+    await locator.click();
   }
 
-  async getTitle(): Promise<string> {
-    return this.page.title();
+  async sendKeys(locator: Locator, text: string) {
+    await locator.waitFor({ state: 'visible' });
+    await locator.fill(text);
   }
 }
