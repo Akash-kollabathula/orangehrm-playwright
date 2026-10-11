@@ -3,16 +3,17 @@ import testData from '../data/testdata.json';
 
 test.describe('PIM Module Tests', () => {
 
-  test('Add New Employee Successfully', async ({ loginPage, dashboardPage, pimPage }) => {
-    // Step 1: Login
-    await loginPage.login(testData.validUser.username, testData.validUser.password);
+  test('Add New Employee Successfully', async ({ dashboardPage, pimPage }) => {
+    await dashboardPage.openDashboard();
     await dashboardPage.assertDashboardLoaded();
 
-    // Step 2: Navigate to PIM and Add Employee
-    await dashboardPage.navigateToPIM();
-    await pimPage.addEmployee(testData.employee.firstName, testData.employee.lastName);
+    await dashboardPage.navigateToModule('PIM');
+    const employee = {
+      firstName: testData.employee.firstName,
+      lastName: `${testData.employee.lastName}${Date.now()}`,
+    };
 
-    // Step 3: Verify creation
+    await pimPage.addEmployee(employee.firstName, employee.lastName);
     await pimPage.assertEmployeeCreated();
   });
 

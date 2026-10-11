@@ -1,10 +1,11 @@
 import { test } from '../fixtures/testFixture';
 import testData from '../data/testdata.json';
+import { validCredentials } from '../data/testConfig';
 
 test.describe('Authentication Tests', () => {
 
   test('Valid Login Test', async ({ loginPage, dashboardPage }) => {
-    await loginPage.login(testData.validUser.username, testData.validUser.password);
+    await loginPage.login(validCredentials.username, validCredentials.password);
     await dashboardPage.assertDashboardLoaded();
   });
 
