@@ -3,19 +3,21 @@ import { BasePage } from './BasePage';
 
 export class DashboardPage extends BasePage {
   readonly heading: Locator;
-  readonly pimMenu: Locator;
 
   constructor(page: Page) {
     super(page);
     this.heading = page.getByRole('heading', { name: 'Dashboard' });
-    this.pimMenu = page.getByRole('link', { name: 'PIM' });
+  }
+
+  async openDashboard() {
+    await this.navigateTo('/web/index.php/dashboard/index');
   }
 
   async assertDashboardLoaded() {
     await expect(this.heading).toBeVisible();
   }
 
-  async navigateToPIM() {
-    await this.clickElement(this.pimMenu);
+  async navigateToModule(name: string) {
+    await this.clickElement(this.page.getByRole('link', { name, exact: true }));
   }
 }

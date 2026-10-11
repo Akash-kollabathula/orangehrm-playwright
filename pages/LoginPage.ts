@@ -19,9 +19,9 @@ export class LoginPage extends BasePage {
     await this.navigateTo('/web/index.php/auth/login');
   }
 
-  async login(username?: string, password?: string) {
-    if (username) await this.sendKeys(this.usernameInput, username);
-    if (password) await this.sendKeys(this.passwordInput, password);
+  async login(username: string, password: string) {
+    await this.sendKeys(this.usernameInput, username);
+    await this.sendKeys(this.passwordInput, password);
     await this.clickElement(this.loginButton);
   }
 
